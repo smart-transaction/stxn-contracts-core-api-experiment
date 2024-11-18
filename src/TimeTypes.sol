@@ -28,7 +28,7 @@ struct SolverData {
 /// @param amount The amount of Ether to send with the call
 /// @param addr The target address of the call
 /// @param gas The gas limit for the call
-/// @param callvalue The optional call data in format abi.encodeWithSignature("funcname()", [param1, param2, ...]);
+/// @param callvalue The optional call data in format abi.encodeWithSignature("funcname()", param1, param2, ...);
 struct CallObject {
     uint256 amount;
     uint256 gas;
