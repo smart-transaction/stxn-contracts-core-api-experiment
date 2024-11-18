@@ -120,9 +120,9 @@ contract SelfCheckoutLib {
             AdditionalData({key: keccak256(abi.encodePacked("seqNum")), value: abi.encode(laminatorSequenceNumber)});
 
         AdditionalData[] memory hintdices = new AdditionalData[](3);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(callObjs[1])), value: abi.encode(1)});
-        hintdices[2] = AdditionalData({key: keccak256(abi.encode(callObjs[2])), value: abi.encode(2)});
+        hintdices[0] = AdditionalData({key: callbreaker.getCallObjId(callObjs[0]), value: abi.encode(0)});
+        hintdices[1] = AdditionalData({key: callbreaker.getCallObjId(callObjs[1]), value: abi.encode(1)});
+        hintdices[2] = AdditionalData({key: callbreaker.getCallObjId(callObjs[2]), value: abi.encode(2)});
 
         callbreaker.executeAndVerify(callObjs, returnObjs, associatedData, hintdices);
     }

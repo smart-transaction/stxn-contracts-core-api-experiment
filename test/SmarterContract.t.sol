@@ -148,11 +148,11 @@ contract SmarterContractTest is Test {
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
         hintdices[0] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[0])),
+            key: callbreaker.getCallObjId(callObjs[0]),
             value: abi.encode(0)
         });
         hintdices[1] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[1])),
+            key: callbreaker.getCallObjId(callObjs[1]),
             value: abi.encode(1)
         });
 
@@ -213,11 +213,11 @@ contract SmarterContractTest is Test {
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
         hintdices[0] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[0])),
+            key: callbreaker.getCallObjId(callObjs[0]),
             value: abi.encode(0)
         });
         hintdices[1] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[1])),
+            key: callbreaker.getCallObjId(callObjs[1]),
             value: abi.encode(1)
         });
 
@@ -278,11 +278,11 @@ contract SmarterContractTest is Test {
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
         hintdices[0] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[0])),
+            key: callbreaker.getCallObjId(callObjs[0]),
             value: abi.encode(0)
         });
         hintdices[1] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[1])),
+            key: callbreaker.getCallObjId(callObjs[1]),
             value: abi.encode(1)
         });
 
@@ -343,11 +343,11 @@ contract SmarterContractTest is Test {
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
         hintdices[0] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[0])),
+            key: callbreaker.getCallObjId(callObjs[0]),
             value: abi.encode(0)
         });
         hintdices[1] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[1])),
+            key: callbreaker.getCallObjId(callObjs[1]),
             value: abi.encode(1)
         });
 
@@ -408,11 +408,11 @@ contract SmarterContractTest is Test {
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
         hintdices[0] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[0])),
+            key: callbreaker.getCallObjId(callObjs[0]),
             value: abi.encode(0)
         });
         hintdices[1] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[1])),
+            key: callbreaker.getCallObjId(callObjs[1]),
             value: abi.encode(1)
         });
 
@@ -481,11 +481,11 @@ contract SmarterContractTest is Test {
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
         hintdices[0] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[0])),
+            key: callbreaker.getCallObjId(callObjs[0]),
             value: abi.encode(0)
         });
         hintdices[1] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[1])),
+            key: callbreaker.getCallObjId(callObjs[1]),
             value: abi.encode(1)
         });
 
@@ -567,11 +567,11 @@ contract SmarterContractTest is Test {
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
         hintdices[0] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[0])),
+            key: callbreaker.getCallObjId(callObjs[0]),
             value: abi.encode(0)
         });
         hintdices[1] = AdditionalData({
-            key: keccak256(abi.encode(callObjs[1])),
+            key: callbreaker.getCallObjId(callObjs[1]),
             value: abi.encode(1)
         });
 

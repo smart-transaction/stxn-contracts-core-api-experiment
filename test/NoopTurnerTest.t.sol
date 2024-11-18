@@ -37,7 +37,7 @@ contract NoopTurnerTest is Test {
         AdditionalData[] memory associatedData = new AdditionalData[](0);
 
         AdditionalData[] memory hintdices = new AdditionalData[](1);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
+        hintdices[0] = AdditionalData({key: callbreaker.getCallObjId(callObjs[0]), value: abi.encode(0)});
 
         vm.prank(address(0xdeadbeef), address(0xdeadbeef));
         callbreaker.executeAndVerify(callObjs, returnObjs, associatedData, hintdices);

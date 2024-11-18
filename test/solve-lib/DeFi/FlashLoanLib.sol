@@ -140,11 +140,11 @@ contract FlashLoanLib {
             AdditionalData({key: keccak256(abi.encodePacked("pullIndex")), value: abi.encode(laminatorSequenceNumber)});
 
         AdditionalData[] memory hintdices = new AdditionalData[](5);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(callObjs[1])), value: abi.encode(1)});
-        hintdices[2] = AdditionalData({key: keccak256(abi.encode(callObjs[2])), value: abi.encode(2)});
-        hintdices[3] = AdditionalData({key: keccak256(abi.encode(callObjs[3])), value: abi.encode(3)});
-        hintdices[4] = AdditionalData({key: keccak256(abi.encode(callObjs[4])), value: abi.encode(4)});
+        hintdices[0] = AdditionalData({key: callbreaker.getCallObjId(callObjs[0]), value: abi.encode(0)});
+        hintdices[1] = AdditionalData({key: callbreaker.getCallObjId(callObjs[1]), value: abi.encode(1)});
+        hintdices[2] = AdditionalData({key: callbreaker.getCallObjId(callObjs[2]), value: abi.encode(2)});
+        hintdices[3] = AdditionalData({key: callbreaker.getCallObjId(callObjs[3]), value: abi.encode(3)});
+        hintdices[4] = AdditionalData({key: callbreaker.getCallObjId(callObjs[4]), value: abi.encode(4)});
 
         callbreaker.executeAndVerify(callObjs, returnObjs, associatedData, hintdices, generateFlashLoanData(address(flashLoan)));
     }

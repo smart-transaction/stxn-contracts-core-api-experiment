@@ -118,7 +118,7 @@ contract SmarterContract {
     /// @custom:reverts CallMismatch() The callobject at the hintdex should match the specified callObject
     function assertFutureCallTo(CallObject memory callObj, uint256 hintdex) public view {
         uint256 currentlyExecuting = callbreaker.getCurrentlyExecuting();
-        bytes32 callObjHash = keccak256(abi.encode(callObj));
+        bytes32 callObjHash = callbreaker.getCallObjId(callObj);
         bytes32 outputHash = callbreaker.getCallListAt(hintdex).callId;
         if (hintdex <= currentlyExecuting) {
             revert FutureCallExpected();
@@ -134,7 +134,7 @@ contract SmarterContract {
     /// @custom:reverts CallMismatch() The callobject at the next index should match the specified callObject
     function assertNextCallTo(CallObject memory callObj) public view {
         uint256 currentlyExecuting = callbreaker.getCurrentlyExecuting();
-        bytes32 callObjHash = keccak256(abi.encode(callObj));
+        bytes32 callObjHash = callbreaker.getCallObjId(callObj);
         bytes32 outputHash = callbreaker.getCallListAt(currentlyExecuting + 1).callId;
         if (outputHash != callObjHash) {
             revert CallMismatch();

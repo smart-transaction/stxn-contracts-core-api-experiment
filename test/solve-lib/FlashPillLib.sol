@@ -61,7 +61,7 @@ contract FlashPillLib {
             AdditionalData({key: keccak256(abi.encodePacked("pullIndex")), value: abi.encode(laminatorSequenceNumber)});
 
         AdditionalData[] memory hintdices = new AdditionalData[](1);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
+        hintdices[0] = AdditionalData({key: callbreaker.getCallObjId(callObjs[0]), value: abi.encode(0)});
 
         callbreaker.executeAndVerify(callObjs, returnObjs, associatedData, hintdices);
     }

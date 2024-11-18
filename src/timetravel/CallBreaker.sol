@@ -163,7 +163,7 @@ contract CallBreaker is CallBreakerStorage {
     /// @dev This is very gas-extensive as it computes in O(n)
     /// @param callObj The callObj to search for
     function getCompleteCallIndexList(CallObject calldata callObj) external view returns (uint256[] memory) {
-        bytes32 callId = keccak256(abi.encode(callObj));
+        bytes32 callId = getCallObjId(callObj);
 
         // First, determine the count of matching elements
         uint256 count;
@@ -190,7 +190,7 @@ contract CallBreaker is CallBreakerStorage {
     /// @param callObj The CallObject whose indices are to be fetched
     /// @return An array of indices where the given CallObject is found
     function getCallIndex(CallObject calldata callObj) public view returns (uint256[] memory) {
-        bytes32 callId = keccak256(abi.encode(callObj));
+        bytes32 callId = getCallObjId(callObj);
         // look up this callid in hintdices
         uint256[] memory hintdices = hintdicesStore[callId];
         // validate that the right callid lives at these hintdices
@@ -289,7 +289,7 @@ contract CallBreaker is CallBreakerStorage {
     function _populateCallIndices() internal {
         uint256 l = callStore.length;
         for (uint256 i = 0; i < l; i++) {
-            Call memory call = Call({callId: keccak256(abi.encode(_getCall(i))), index: i});
+            Call memory call = Call({callId: getCallObjId(_getCall(i)), index: i});
             callList.push(call);
             emit CallPopulated(_getCall(i), i);
         }
@@ -314,8 +314,12 @@ contract CallBreaker is CallBreakerStorage {
     }
 
     function _expectCallAt(CallObject memory callObj, uint256 index) internal view {
-        if (keccak256(abi.encode(_getCall(index))) != keccak256(abi.encode(callObj))) {
+        if (getCallObjId(_getCall(index)) != getCallObjId(callObj)) {
             revert CallPositionFailed(callObj, index);
         }
+    }
+
+    function getCallObjId(CallObject memory callObj) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(callObj.addr, callObj.amount, callObj.callvalue));
     }
 }

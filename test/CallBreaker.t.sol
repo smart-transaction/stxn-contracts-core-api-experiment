@@ -173,8 +173,8 @@ contract CallBreakerTest is Test {
         callbreaker.populateAssociatedDataStoreHarness(associatedData);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(calls[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(calls[1])), value: abi.encode(1)});
+        hintdices[0] = AdditionalData({key: callbreaker.getCallObjId(calls[0]), value: abi.encode(0)});
+        hintdices[1] = AdditionalData({key: callbreaker.getCallObjId(calls[1]), value: abi.encode(1)});
 
         callbreaker.populateHintdicesHarness(hintdices);
     }
@@ -204,11 +204,11 @@ contract CallBreakerTest is Test {
         callbreaker.populateAssociatedDataStoreHarness(associatedData);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(calls[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(calls[1])), value: abi.encode(1)});
+        hintdices[0] = AdditionalData({key: callbreaker.getCallObjId(calls[0]), value: abi.encode(0)});
+        hintdices[1] = AdditionalData({key: callbreaker.getCallObjId(calls[1]), value: abi.encode(1)});
 
         callbreaker.populateHintdicesHarness(hintdices);
-        callbreaker.insertIntoHintdicesHarness(keccak256(abi.encode(calls[0])), 2);
+        callbreaker.insertIntoHintdicesHarness(callbreaker.getCallObjId(calls[0]), 2);
     }
 
     function testInsertIntoAssociatedDataStore() external {
@@ -236,12 +236,12 @@ contract CallBreakerTest is Test {
         callbreaker.populateAssociatedDataStoreHarness(associatedData);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(calls[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(calls[1])), value: abi.encode(1)});
+        hintdices[0] = AdditionalData({key: callbreaker.getCallObjId(calls[0]), value: abi.encode(0)});
+        hintdices[1] = AdditionalData({key: callbreaker.getCallObjId(calls[1]), value: abi.encode(1)});
 
         callbreaker.populateHintdicesHarness(hintdices);
 
-        callbreaker.insertIntoHintdicesHarness(keccak256(abi.encode(calls[0])), 2);
+        callbreaker.insertIntoHintdicesHarness(callbreaker.getCallObjId(calls[0]), 2);
 
         callbreaker.insertIntoAssociatedDataStore(keccak256(abi.encodePacked("x")), abi.encode(uint256(0)));
     }
@@ -258,8 +258,8 @@ contract CallBreakerTest is Test {
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
 
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(calls[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(calls[1])), value: abi.encode(1)});
+        hintdices[0] = AdditionalData({key: callbreaker.getCallObjId(calls[0]), value: abi.encode(0)});
+        hintdices[1] = AdditionalData({key: callbreaker.getCallObjId(calls[1]), value: abi.encode(1)});
 
         callbreaker.populateHintdicesHarness(hintdices);
 
