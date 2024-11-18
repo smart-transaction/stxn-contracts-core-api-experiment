@@ -73,20 +73,19 @@ contract Laminator is ILaminator {
     /// @notice Calls the `push` function into the LaminatedProxy associated with the sender.
     /// @dev Encodes the provided calldata and calls it into the `push` function of the proxy contract.
     ///      A new proxy will be created if one does not already exist for the sender.
-    /// @param cData The calldata to be pushed.
+    /// @param callObjs The array of CallObject to be pushed for the future execution.
     /// @param delay The delay for when the call can be executed.
     /// @param selector code identifier for solvers to select relevant actions
     /// @param dataValues to be used by solvers in serving the user objective
     /// @return sequenceNumber The sequence number of the deferred function call.
-    function pushToProxy(bytes calldata cData, uint32 delay, bytes32 selector, SolverData[] memory dataValues)
+    function pushToProxy(CallObject[] calldata callObjs, uint32 delay, bytes32 selector, SolverData[] memory dataValues)
         external
         returns (uint256 sequenceNumber)
     {
         LaminatedProxy proxy = LaminatedProxy(payable(_getOrCreateProxy(msg.sender)));
 
-        sequenceNumber = proxy.push(cData, delay, dataValues);
+        sequenceNumber = proxy.push(callObjs, delay, dataValues);
 
-        CallObject[] memory callObjs = abi.decode(cData, (CallObject[]));
         emit ProxyPushed(address(proxy), callObjs, sequenceNumber, selector, dataValues);
     }
 

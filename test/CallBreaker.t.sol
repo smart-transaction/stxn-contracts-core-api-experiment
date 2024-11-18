@@ -144,9 +144,8 @@ contract CallBreakerTest is Test {
             value: abi.encodePacked(address(0xdeadbeef))
         });
         associatedData[1] = AdditionalData({key: keccak256(abi.encodePacked("pullIndex")), value: abi.encode(0)});
-        bytes memory encodedData = abi.encode(associatedData);
 
-        callbreaker.populateAssociatedDataStoreHarness(encodedData);
+        callbreaker.populateAssociatedDataStoreHarness(associatedData);
     }
 
     function testPopulateHintdices() external {
@@ -170,16 +169,14 @@ contract CallBreakerTest is Test {
             value: abi.encodePacked(address(0xdeadbeef))
         });
         associatedData[1] = AdditionalData({key: keccak256(abi.encodePacked("pullIndex")), value: abi.encode(0)});
-        bytes memory encodedData = abi.encode(associatedData);
 
-        callbreaker.populateAssociatedDataStoreHarness(encodedData);
+        callbreaker.populateAssociatedDataStoreHarness(associatedData);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
         hintdices[0] = AdditionalData({key: keccak256(abi.encode(calls[0])), value: abi.encode(0)});
         hintdices[1] = AdditionalData({key: keccak256(abi.encode(calls[1])), value: abi.encode(1)});
-        bytes memory hintindices = abi.encode(hintdices);
 
-        callbreaker.populateHintdicesHarness(hintindices);
+        callbreaker.populateHintdicesHarness(hintdices);
     }
 
     function testInsertIntoHintdices() external {
@@ -203,16 +200,14 @@ contract CallBreakerTest is Test {
             value: abi.encodePacked(address(0xdeadbeef))
         });
         associatedData[1] = AdditionalData({key: keccak256(abi.encodePacked("pullIndex")), value: abi.encode(0)});
-        bytes memory encodedData = abi.encode(associatedData);
 
-        callbreaker.populateAssociatedDataStoreHarness(encodedData);
+        callbreaker.populateAssociatedDataStoreHarness(associatedData);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
         hintdices[0] = AdditionalData({key: keccak256(abi.encode(calls[0])), value: abi.encode(0)});
         hintdices[1] = AdditionalData({key: keccak256(abi.encode(calls[1])), value: abi.encode(1)});
-        bytes memory hintindices = abi.encode(hintdices);
 
-        callbreaker.populateHintdicesHarness(hintindices);
+        callbreaker.populateHintdicesHarness(hintdices);
         callbreaker.insertIntoHintdicesHarness(keccak256(abi.encode(calls[0])), 2);
     }
 
@@ -237,16 +232,14 @@ contract CallBreakerTest is Test {
             value: abi.encodePacked(address(0xdeadbeef))
         });
         associatedData[1] = AdditionalData({key: keccak256(abi.encodePacked("pullIndex")), value: abi.encode(0)});
-        bytes memory encodedData = abi.encode(associatedData);
 
-        callbreaker.populateAssociatedDataStoreHarness(encodedData);
+        callbreaker.populateAssociatedDataStoreHarness(associatedData);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
         hintdices[0] = AdditionalData({key: keccak256(abi.encode(calls[0])), value: abi.encode(0)});
         hintdices[1] = AdditionalData({key: keccak256(abi.encode(calls[1])), value: abi.encode(1)});
-        bytes memory hintindices = abi.encode(hintdices);
 
-        callbreaker.populateHintdicesHarness(hintindices);
+        callbreaker.populateHintdicesHarness(hintdices);
 
         callbreaker.insertIntoHintdicesHarness(keccak256(abi.encode(calls[0])), 2);
 
@@ -268,7 +261,7 @@ contract CallBreakerTest is Test {
         hintdices[0] = AdditionalData({key: keccak256(abi.encode(calls[0])), value: abi.encode(0)});
         hintdices[1] = AdditionalData({key: keccak256(abi.encode(calls[1])), value: abi.encode(1)});
 
-        callbreaker.populateHintdicesHarness(abi.encode(hintdices));
+        callbreaker.populateHintdicesHarness(hintdices);
 
         uint256[] memory indices = callbreaker.getCallIndex(calls[0]);
 

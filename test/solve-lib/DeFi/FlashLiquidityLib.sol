@@ -65,7 +65,7 @@ contract FlashLiquidityLib {
 
         SolverData[] memory dataValues = Constants.emptyDataValues();
 
-        return laminator.pushToProxy(abi.encode(pusherCallObjs), 1, "0x00", dataValues);
+        return laminator.pushToProxy(pusherCallObjs, 1, "0x00", dataValues);
     }
 
     function solverLand(
@@ -143,8 +143,6 @@ contract FlashLiquidityLib {
         hintdices[3] = AdditionalData({key: keccak256(abi.encode(callObjs[3])), value: abi.encode(3)});
         hintdices[4] = AdditionalData({key: keccak256(abi.encode(callObjs[4])), value: abi.encode(4)});
 
-        callbreaker.executeAndVerify(
-            abi.encode(callObjs), abi.encode(returnObjs), abi.encode(associatedData), abi.encode(hintdices)
-        );
+        callbreaker.executeAndVerify(callObjs, returnObjs, associatedData, hintdices);
     }
 }

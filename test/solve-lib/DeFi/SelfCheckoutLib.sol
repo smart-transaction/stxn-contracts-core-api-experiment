@@ -61,9 +61,9 @@ contract SelfCheckoutLib {
         });
         SolverData[] memory dataValues = Constants.emptyDataValues();
 
-        laminator.pushToProxy(abi.encode(pusherCallObjs), 1, "0x00", dataValues);
+        laminator.pushToProxy(pusherCallObjs, 1, "0x00", dataValues);
 
-        return laminator.pushToProxy(abi.encode(pusherCallObjs), 1, "0x00", dataValues);
+        return laminator.pushToProxy(pusherCallObjs, 1, "0x00", dataValues);
     }
 
     // msg.sender here is the filler. all transfers of funds and approvals are made by the filler.
@@ -124,8 +124,6 @@ contract SelfCheckoutLib {
         hintdices[1] = AdditionalData({key: keccak256(abi.encode(callObjs[1])), value: abi.encode(1)});
         hintdices[2] = AdditionalData({key: keccak256(abi.encode(callObjs[2])), value: abi.encode(2)});
 
-        callbreaker.executeAndVerify(
-            abi.encode(callObjs), abi.encode(returnObjs), abi.encode(associatedData), abi.encode(hintdices)
-        );
+        callbreaker.executeAndVerify(callObjs, returnObjs, associatedData, hintdices);
     }
 }

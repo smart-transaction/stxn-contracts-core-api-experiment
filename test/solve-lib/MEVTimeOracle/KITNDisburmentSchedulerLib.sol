@@ -70,7 +70,7 @@ contract KITNDisburmentSchedulerLib {
         SolverData[] memory dataValues = new SolverData[](1);
         dataValues[0] = data;
 
-        return laminator.pushToProxy(abi.encode(pusherCallObjs), 1, SELECTOR, dataValues);
+        return laminator.pushToProxy(pusherCallObjs, 1, SELECTOR, dataValues);
     }
 
     function solverLand(uint256 laminatorSequenceNumber, address filler) public {
@@ -117,9 +117,7 @@ contract KITNDisburmentSchedulerLib {
         hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
         hintdices[1] = AdditionalData({key: keccak256(abi.encode(callObjs[1])), value: abi.encode(1)});
 
-        callbreaker.executeAndVerify(
-            abi.encode(callObjs), abi.encode(returnObjs), abi.encode(associatedData), abi.encode(hintdices)
-        );
+        callbreaker.executeAndVerify(callObjs, returnObjs, associatedData, hintdices);
     }
 
     function _getDisbursalData(address receiver) private pure returns (KITNDisburmentScheduler.DisbursalData memory) {

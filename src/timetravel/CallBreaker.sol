@@ -58,39 +58,37 @@ contract CallBreaker is CallBreakerStorage {
 
     /// @notice executes and verifies that the given calls, when executed, gives the correct return values
     /// @dev SECURITY NOTICE: This function is only callable when the portal is closed. It requires the caller to be an EOA.
-    /// @param callsBytes The bytes representing the calls to be verified
-    /// @param returnsBytes The bytes representing the returns to be verified against
+    /// @param callsObjs The bytes representing the calls to be verified
+    /// @param returnsObjs The bytes representing the returns to be verified against
     /// @param associatedData Bytes representing associated data with the verify call, reserved for tipping the solver
+    /// @param hintdices An array of AddidionalData representing hint indices. Format: key: keccak256(idOfCallObj)
     function executeAndVerify(
-        bytes calldata callsBytes,
-        bytes calldata returnsBytes,
-        bytes calldata associatedData,
-        bytes calldata hintdices
+        CallObject[] calldata callsObjs,
+        ReturnObject[] calldata returnsObjs,
+        AdditionalData[] calldata associatedData,
+        AdditionalData[] calldata hintdices
     ) external payable onlyPortalClosed {
-        CallObject[] memory calls = _setupExecutionData(callsBytes, returnsBytes, associatedData, hintdices);
+        CallObject[] memory calls = _setupExecutionData(callsObjs, returnsObjs, associatedData, hintdices);
         _executeAndVerifyCalls(calls);
     }
 
     /// @notice fetches flash loan before executing and verifying call objects who might use the loaned amount
     /// @dev SECURITY NOTICE: This function is a temporary place holder for a nested call objects solution which is still under development
     /// TODO: Remove and replace with a generic version of nested call objects
-    /// @param callsBytes The bytes representing the calls to be verified
-    /// @param returnsBytes The bytes representing the returns to be verified against
-    /// @param associatedData Bytes representing associated data with the verify call, reserved for tipping the solver
-    /// @param hintdices Bytes representing indexes of the call objects
-    /// @param flashLoanData Bytes representing associated data with the verify call, reserved for tipping the solver
+    /// @param callsObjs An array of calls to be verified
+    /// @param returnsObjs An array of returns to be verified against
+    /// @param associatedData Av array of associated data with the verify call, reserved for tipping the solver
+    /// @param hintdices An array of indexes of the call objects
+    /// @param flashLoanData The associated data with the verify call, reserved for tipping the solver
     function executeAndVerify(
-        bytes calldata callsBytes,
-        bytes calldata returnsBytes,
-        bytes calldata associatedData,
-        bytes calldata hintdices,
-        bytes calldata flashLoanData
+        CallObject[] calldata callsObjs,
+        ReturnObject[] calldata returnsObjs,
+        AdditionalData[] calldata associatedData,
+        AdditionalData[] calldata hintdices,
+        FlashLoanData calldata flashLoanData
     ) external payable onlyPortalClosed {
-        _setupExecutionData(callsBytes, returnsBytes, associatedData, hintdices);
-        FlashLoanData memory _flashLoanData = abi.decode(flashLoanData, (FlashLoanData));
-        IFlashLoan(_flashLoanData.provider).flashLoan(
-            address(this), _flashLoanData.amountA, _flashLoanData.amountB, callsBytes
-        );
+        _setupExecutionData(callsObjs, returnsObjs, associatedData, hintdices);
+        IFlashLoan(flashLoanData.provider).flashLoan(address(this), flashLoanData.amountA, flashLoanData.amountB, callsObjs);
     }
 
     /**
@@ -99,7 +97,7 @@ contract CallBreaker is CallBreakerStorage {
      * @param amountA The amount of tokens lent.
      * @param tokenB The second loan currency.
      * @param amountB The amount of tokens lent.
-     * @param data the execute and verify data
+     * @param callObjs the execute and verify call objects
      * @return true if the function executed successfully
      */
     function onFlashLoan(
@@ -108,12 +106,11 @@ contract CallBreaker is CallBreakerStorage {
         uint256 amountA,
         address tokenB,
         uint256 amountB,
-        bytes calldata data
+        CallObject[] calldata callObjs
     ) external onlyPortalOpen returns (bool) {
         emit CallBreakerFlashFunds(tokenA, amountA, tokenB, amountB);
-        CallObject[] memory calls = abi.decode(data, (CallObject[]));
 
-        _executeAndVerifyCalls(calls);
+        _executeAndVerifyCalls(callObjs);
         IERC20(tokenA).approve(msg.sender, amountA);
         IERC20(tokenB).approve(msg.sender, amountB);
         return true;
@@ -226,29 +223,26 @@ contract CallBreaker is CallBreakerStorage {
     }
 
     function _setupExecutionData(
-        bytes calldata callsBytes,
-        bytes calldata returnsBytes,
-        bytes calldata associatedData,
-        bytes calldata hintdices
+        CallObject[] calldata callObjs,
+        ReturnObject[] calldata returnObjs,
+        AdditionalData[] calldata associatedData,
+        AdditionalData[] calldata hintdices
     ) internal returns (CallObject[] memory) {
         if (msg.sender != tx.origin) {
             revert MustBeEOA();
         }
 
-        CallObject[] memory calls = abi.decode(callsBytes, (CallObject[]));
-        ReturnObject[] memory returnValues = abi.decode(returnsBytes, (ReturnObject[]));
-
-        if (calls.length != returnValues.length) {
+        if (callObjs.length != returnObjs.length) {
             revert LengthMismatch();
         }
 
-        _setPortalOpen(calls, returnValues);
-        _populateCallsAndReturnValues(calls, returnValues);
+        _setPortalOpen(callObjs, returnObjs);
+        _populateCallsAndReturnValues(callObjs, returnObjs);
         _populateAssociatedDataStore(associatedData);
         _populateHintdices(hintdices);
         _populateCallIndices();
 
-        return calls;
+        return callObjs;
     }
 
     function _executeAndVerifyCalls(CallObject[] memory calls) internal {
@@ -302,10 +296,8 @@ contract CallBreaker is CallBreakerStorage {
     }
 
     /// @notice Populates the associatedDataStore with a list of key-value pairs
-    /// @param encodedData The abi-encoded list of (bytes32, bytes32) key-value pairs
-    function _populateAssociatedDataStore(bytes memory encodedData) internal {
-        AdditionalData[] memory associatedData = abi.decode(encodedData, (AdditionalData[]));
-
+    /// @param associatedData The abi-encoded list of (bytes32, bytes32) key-value pairs
+    function _populateAssociatedDataStore(AdditionalData[] memory associatedData) internal {
         uint256 l = associatedData.length;
         for (uint256 i = 0; i < l; i++) {
             associatedDataKeyList.push(associatedData[i].key);
@@ -313,9 +305,7 @@ contract CallBreaker is CallBreakerStorage {
         }
     }
 
-    function _populateHintdices(bytes memory encodedData) internal {
-        AdditionalData[] memory hintDices = abi.decode(encodedData, (AdditionalData[]));
-
+    function _populateHintdices(AdditionalData[] memory hintDices) internal {
         uint256 l = hintDices.length;
         for (uint256 i = 0; i < l; i++) {
             hintdicesStoreKeyList.push(hintDices[i].key);

@@ -12,7 +12,8 @@ import {Dummy} from "./utils/Dummy.sol";
 import {Constants} from "test/utils/Constants.sol";
 
 contract SmarterContractTest is Test {
-    bytes32 public constant DEFAULT_CODE = keccak256(abi.encode("DEFAULT_CODE"));
+    bytes32 public constant DEFAULT_CODE =
+        keccak256(abi.encode("DEFAULT_CODE"));
 
     CallBreaker public callbreaker;
     CallBreakerHarness callbreakerHarness = new CallBreakerHarness();
@@ -116,7 +117,7 @@ contract SmarterContractTest is Test {
         SolverData[] memory dataValues = Constants.emptyDataValues();
 
         vm.prank(pusher, pusher);
-        laminator.pushToProxy(abi.encode(pusherCallObjs), 0, DEFAULT_CODE, dataValues);
+        laminator.pushToProxy(pusherCallObjs, 0, DEFAULT_CODE, dataValues);
 
         CallObject[] memory callObjs = new CallObject[](2);
         ReturnObject[] memory returnObjs = new ReturnObject[](2);
@@ -128,23 +129,39 @@ contract SmarterContractTest is Test {
             callvalue: abi.encodeWithSignature("pull(uint256)", 0)
         });
         // Blank Callobj
-        callObjs[1] = CallObject({amount: 0, addr: address(0xbabe), gas: 1000000, callvalue: ""});
+        callObjs[1] = CallObject({
+            amount: 0,
+            addr: address(0xbabe),
+            gas: 1000000,
+            callvalue: ""
+        });
 
         ReturnObject[] memory returnObjsFromPull = new ReturnObject[](1);
         returnObjsFromPull[0] = ReturnObject({returnvalue: ""});
 
-        returnObjs[0] = ReturnObject({returnvalue: abi.encode(abi.encode(returnObjsFromPull))});
+        returnObjs[0] = ReturnObject({
+            returnvalue: abi.encode(abi.encode(returnObjsFromPull))
+        });
         returnObjs[1] = ReturnObject({returnvalue: ""});
 
         AdditionalData[] memory associatedData = new AdditionalData[](0);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(callObjs[1])), value: abi.encode(1)});
+        hintdices[0] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[0])),
+            value: abi.encode(0)
+        });
+        hintdices[1] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[1])),
+            value: abi.encode(1)
+        });
 
         vm.prank(address(0xdeadbeef), address(0xdeadbeef));
         callbreaker.executeAndVerify(
-            abi.encode(callObjs), abi.encode(returnObjs), abi.encode(associatedData), abi.encode(hintdices)
+            callObjs,
+            returnObjs,
+            associatedData,
+            hintdices
         );
     }
 
@@ -164,13 +181,18 @@ contract SmarterContractTest is Test {
         SolverData[] memory dataValues = Constants.emptyDataValues();
 
         vm.prank(pusher, pusher);
-        laminator.pushToProxy(abi.encode(pusherCallObjs), 0, DEFAULT_CODE, dataValues);
+        laminator.pushToProxy(pusherCallObjs, 0, DEFAULT_CODE, dataValues);
 
         CallObject[] memory callObjs = new CallObject[](2);
         ReturnObject[] memory returnObjs = new ReturnObject[](2);
 
         // Blank Callobj
-        callObjs[0] = CallObject({amount: 0, addr: address(0xbabe), gas: 1000000, callvalue: ""});
+        callObjs[0] = CallObject({
+            amount: 0,
+            addr: address(0xbabe),
+            gas: 1000000,
+            callvalue: ""
+        });
 
         callObjs[1] = CallObject({
             amount: 0,
@@ -183,17 +205,28 @@ contract SmarterContractTest is Test {
         returnObjsFromPull[0] = ReturnObject({returnvalue: ""});
 
         returnObjs[0] = ReturnObject({returnvalue: ""});
-        returnObjs[1] = ReturnObject({returnvalue: abi.encode(abi.encode(returnObjsFromPull))});
+        returnObjs[1] = ReturnObject({
+            returnvalue: abi.encode(abi.encode(returnObjsFromPull))
+        });
 
         AdditionalData[] memory associatedData = new AdditionalData[](0);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(callObjs[1])), value: abi.encode(1)});
+        hintdices[0] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[0])),
+            value: abi.encode(0)
+        });
+        hintdices[1] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[1])),
+            value: abi.encode(1)
+        });
 
         vm.prank(address(0xdeadbeef), address(0xdeadbeef));
         callbreaker.executeAndVerify(
-            abi.encode(callObjs), abi.encode(returnObjs), abi.encode(associatedData), abi.encode(hintdices)
+            callObjs,
+            returnObjs,
+            associatedData,
+            hintdices
         );
     }
 
@@ -213,13 +246,18 @@ contract SmarterContractTest is Test {
         SolverData[] memory dataValues = Constants.emptyDataValues();
 
         vm.prank(pusher, pusher);
-        laminator.pushToProxy(abi.encode(pusherCallObjs), 0, DEFAULT_CODE, dataValues);
+        laminator.pushToProxy(pusherCallObjs, 0, DEFAULT_CODE, dataValues);
 
         CallObject[] memory callObjs = new CallObject[](2);
         ReturnObject[] memory returnObjs = new ReturnObject[](2);
 
         // Blank Callobj
-        callObjs[0] = CallObject({amount: 0, addr: address(0xbabe), gas: 1000000, callvalue: ""});
+        callObjs[0] = CallObject({
+            amount: 0,
+            addr: address(0xbabe),
+            gas: 1000000,
+            callvalue: ""
+        });
 
         callObjs[1] = CallObject({
             amount: 0,
@@ -232,17 +270,28 @@ contract SmarterContractTest is Test {
         returnObjsFromPull[0] = ReturnObject({returnvalue: ""});
 
         returnObjs[0] = ReturnObject({returnvalue: ""});
-        returnObjs[1] = ReturnObject({returnvalue: abi.encode(abi.encode(returnObjsFromPull))});
+        returnObjs[1] = ReturnObject({
+            returnvalue: abi.encode(abi.encode(returnObjsFromPull))
+        });
 
         AdditionalData[] memory associatedData = new AdditionalData[](0);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(callObjs[1])), value: abi.encode(1)});
+        hintdices[0] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[0])),
+            value: abi.encode(0)
+        });
+        hintdices[1] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[1])),
+            value: abi.encode(1)
+        });
 
         vm.prank(address(0xdeadbeef), address(0xdeadbeef));
         callbreaker.executeAndVerify(
-            abi.encode(callObjs), abi.encode(returnObjs), abi.encode(associatedData), abi.encode(hintdices)
+            callObjs,
+            returnObjs,
+            associatedData,
+            hintdices
         );
     }
 
@@ -262,7 +311,7 @@ contract SmarterContractTest is Test {
         SolverData[] memory dataValues = Constants.emptyDataValues();
 
         vm.prank(pusher, pusher);
-        laminator.pushToProxy(abi.encode(pusherCallObjs), 0, DEFAULT_CODE, dataValues);
+        laminator.pushToProxy(pusherCallObjs, 0, DEFAULT_CODE, dataValues);
 
         CallObject[] memory callObjs = new CallObject[](2);
         ReturnObject[] memory returnObjs = new ReturnObject[](2);
@@ -275,23 +324,39 @@ contract SmarterContractTest is Test {
         });
 
         // Blank Callobj
-        callObjs[1] = CallObject({amount: 0, addr: address(0xbabe), gas: 1000000, callvalue: ""});
+        callObjs[1] = CallObject({
+            amount: 0,
+            addr: address(0xbabe),
+            gas: 1000000,
+            callvalue: ""
+        });
 
         ReturnObject[] memory returnObjsFromPull = new ReturnObject[](1);
         returnObjsFromPull[0] = ReturnObject({returnvalue: ""});
 
-        returnObjs[0] = ReturnObject({returnvalue: abi.encode(abi.encode(returnObjsFromPull))});
+        returnObjs[0] = ReturnObject({
+            returnvalue: abi.encode(abi.encode(returnObjsFromPull))
+        });
         returnObjs[1] = ReturnObject({returnvalue: ""});
 
         AdditionalData[] memory associatedData = new AdditionalData[](0);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(callObjs[1])), value: abi.encode(1)});
+        hintdices[0] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[0])),
+            value: abi.encode(0)
+        });
+        hintdices[1] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[1])),
+            value: abi.encode(1)
+        });
 
         vm.prank(address(0xdeadbeef), address(0xdeadbeef));
         callbreaker.executeAndVerify(
-            abi.encode(callObjs), abi.encode(returnObjs), abi.encode(associatedData), abi.encode(hintdices)
+            callObjs,
+            returnObjs,
+            associatedData,
+            hintdices
         );
     }
 
@@ -311,7 +376,7 @@ contract SmarterContractTest is Test {
         SolverData[] memory dataValues = Constants.emptyDataValues();
 
         vm.prank(pusher, pusher);
-        laminator.pushToProxy(abi.encode(pusherCallObjs), 0, DEFAULT_CODE, dataValues);
+        laminator.pushToProxy(pusherCallObjs, 0, DEFAULT_CODE, dataValues);
 
         CallObject[] memory callObjs = new CallObject[](2);
         ReturnObject[] memory returnObjs = new ReturnObject[](2);
@@ -334,18 +399,29 @@ contract SmarterContractTest is Test {
         ReturnObject[] memory returnObjsFromPull = new ReturnObject[](1);
         returnObjsFromPull[0] = ReturnObject({returnvalue: ""});
 
-        returnObjs[0] = ReturnObject({returnvalue: abi.encode(abi.encode(returnObjsFromPull))});
+        returnObjs[0] = ReturnObject({
+            returnvalue: abi.encode(abi.encode(returnObjsFromPull))
+        });
         returnObjs[1] = ReturnObject({returnvalue: abi.encode(true)});
 
         AdditionalData[] memory associatedData = new AdditionalData[](0);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(callObjs[1])), value: abi.encode(1)});
+        hintdices[0] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[0])),
+            value: abi.encode(0)
+        });
+        hintdices[1] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[1])),
+            value: abi.encode(1)
+        });
 
         vm.prank(address(0xdeadbeef), address(0xdeadbeef));
         callbreaker.executeAndVerify(
-            abi.encode(callObjs), abi.encode(returnObjs), abi.encode(associatedData), abi.encode(hintdices)
+            callObjs,
+            returnObjs,
+            associatedData,
+            hintdices
         );
 
         callbreakerHarness.setPortalOpen(callObjs, returnObjs);
@@ -365,13 +441,15 @@ contract SmarterContractTest is Test {
             amount: 0,
             addr: address(smarterContract),
             gas: 10000000,
-            callvalue: abi.encodeWithSignature("assertFutureCallWithIndexTestHarness()")
+            callvalue: abi.encodeWithSignature(
+                "assertFutureCallWithIndexTestHarness()"
+            )
         });
 
         SolverData[] memory dataValues = Constants.emptyDataValues();
 
         vm.prank(pusher, pusher);
-        laminator.pushToProxy(abi.encode(pusherCallObjs), 0, DEFAULT_CODE, dataValues);
+        laminator.pushToProxy(pusherCallObjs, 0, DEFAULT_CODE, dataValues);
 
         CallObject[] memory callObjs = new CallObject[](2);
         ReturnObject[] memory returnObjs = new ReturnObject[](2);
@@ -394,18 +472,29 @@ contract SmarterContractTest is Test {
         ReturnObject[] memory returnObjsFromPull = new ReturnObject[](1);
         returnObjsFromPull[0] = ReturnObject({returnvalue: ""});
 
-        returnObjs[0] = ReturnObject({returnvalue: abi.encode(abi.encode(returnObjsFromPull))});
+        returnObjs[0] = ReturnObject({
+            returnvalue: abi.encode(abi.encode(returnObjsFromPull))
+        });
         returnObjs[1] = ReturnObject({returnvalue: abi.encode(true)});
 
         AdditionalData[] memory associatedData = new AdditionalData[](0);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(callObjs[1])), value: abi.encode(1)});
+        hintdices[0] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[0])),
+            value: abi.encode(0)
+        });
+        hintdices[1] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[1])),
+            value: abi.encode(1)
+        });
 
         vm.prank(address(0xdeadbeef), address(0xdeadbeef));
         callbreaker.executeAndVerify(
-            abi.encode(callObjs), abi.encode(returnObjs), abi.encode(associatedData), abi.encode(hintdices)
+            callObjs,
+            returnObjs,
+            associatedData,
+            hintdices
         );
 
         uint256 callLength = 3;
@@ -415,7 +504,8 @@ contract SmarterContractTest is Test {
         callbreakerHarness.setPortalOpen(callObjs, returnObjs);
         // Expect a revert with FutureCallExpected error when asserting the future call
         vm.expectRevert(SmarterContract.FutureCallExpected.selector);
-        smarterContractWithCallBreakerHarness.assertFutureCallWithIndexTestHarness();
+        smarterContractWithCallBreakerHarness
+            .assertFutureCallWithIndexTestHarness();
 
         callLength = 3;
         executeIndex = 1;
@@ -425,7 +515,8 @@ contract SmarterContractTest is Test {
 
         // Expect a revert with CallMismatch error when asserting the future call
         vm.expectRevert(SmarterContract.CallMismatch.selector);
-        smarterContractWithCallBreakerHarness.assertFutureCallWithIndexTestHarness();
+        smarterContractWithCallBreakerHarness
+            .assertFutureCallWithIndexTestHarness();
     }
 
     function testAssertNextCallTo() external {
@@ -444,7 +535,7 @@ contract SmarterContractTest is Test {
         SolverData[] memory dataValues = Constants.emptyDataValues();
 
         vm.prank(pusher, pusher);
-        laminator.pushToProxy(abi.encode(pusherCallObjs), 0, DEFAULT_CODE, dataValues);
+        laminator.pushToProxy(pusherCallObjs, 0, DEFAULT_CODE, dataValues);
 
         CallObject[] memory callObjs = new CallObject[](2);
         ReturnObject[] memory returnObjs = new ReturnObject[](2);
@@ -467,18 +558,29 @@ contract SmarterContractTest is Test {
         ReturnObject[] memory returnObjsFromPull = new ReturnObject[](1);
         returnObjsFromPull[0] = ReturnObject({returnvalue: ""});
 
-        returnObjs[0] = ReturnObject({returnvalue: abi.encode(abi.encode(returnObjsFromPull))});
+        returnObjs[0] = ReturnObject({
+            returnvalue: abi.encode(abi.encode(returnObjsFromPull))
+        });
         returnObjs[1] = ReturnObject({returnvalue: abi.encode(true)});
 
         AdditionalData[] memory associatedData = new AdditionalData[](0);
 
         AdditionalData[] memory hintdices = new AdditionalData[](2);
-        hintdices[0] = AdditionalData({key: keccak256(abi.encode(callObjs[0])), value: abi.encode(0)});
-        hintdices[1] = AdditionalData({key: keccak256(abi.encode(callObjs[1])), value: abi.encode(1)});
+        hintdices[0] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[0])),
+            value: abi.encode(0)
+        });
+        hintdices[1] = AdditionalData({
+            key: keccak256(abi.encode(callObjs[1])),
+            value: abi.encode(1)
+        });
 
         vm.prank(address(0xdeadbeef), address(0xdeadbeef));
         callbreaker.executeAndVerify(
-            abi.encode(callObjs), abi.encode(returnObjs), abi.encode(associatedData), abi.encode(hintdices)
+            callObjs,
+            returnObjs,
+            associatedData,
+            hintdices
         );
 
         uint256 callLength = 3;
@@ -495,13 +597,23 @@ contract SmarterContractTest is Test {
         uint256 callLength = 3;
         uint256 executeIndex = 2;
 
-        (CallObject[] memory calls, ReturnObject[] memory returnValues) =
-            setupAndExecuteDummyCall(callLength, executeIndex);
-        (CallObject memory callObj, ReturnObject memory returnObj) =
-            smarterContractWithCallBreakerHarness.getCurrentExecutingPair();
+        (
+            CallObject[] memory calls,
+            ReturnObject[] memory returnValues
+        ) = setupAndExecuteDummyCall(callLength, executeIndex);
+        (
+            CallObject memory callObj,
+            ReturnObject memory returnObj
+        ) = smarterContractWithCallBreakerHarness.getCurrentExecutingPair();
 
-        assertEq(keccak256(callObj.callvalue), keccak256((calls[executeIndex - 1].callvalue)));
-        assertEq(keccak256(returnObj.returnvalue), keccak256((returnValues[executeIndex - 1].returnvalue)));
+        assertEq(
+            keccak256(callObj.callvalue),
+            keccak256((calls[executeIndex - 1].callvalue))
+        );
+        assertEq(
+            keccak256(returnObj.returnvalue),
+            keccak256((returnValues[executeIndex - 1].returnvalue))
+        );
     }
 
     function testSoloExecuteBlocker() public {
@@ -532,7 +644,10 @@ contract SmarterContractTest is Test {
         smarterContractWithCallBreakerHarness.soloExecuteBlocker();
     }
 
-    function setupAndExecuteDummyCall(uint256 callLength, uint256 executeIndex)
+    function setupAndExecuteDummyCall(
+        uint256 callLength,
+        uint256 executeIndex
+    )
         internal
         returns (CallObject[] memory calls, ReturnObject[] memory returnValues)
     {
@@ -547,7 +662,9 @@ contract SmarterContractTest is Test {
                 callvalue: abi.encodeWithSignature("returnVal(uint256)", i)
             });
 
-            returnValues[i] = ReturnObject({returnvalue: abi.encodePacked(uint256(i))});
+            returnValues[i] = ReturnObject({
+                returnvalue: abi.encodePacked(uint256(i))
+            });
         }
 
         callbreakerHarness.setPortalOpen(calls, returnValues);
